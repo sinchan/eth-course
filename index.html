@@ -34,8 +34,16 @@
                 <p id="balance-query-result"></p>
             </dd>
 
-            <dt class="col-sm-2">Transaction</dt>
-            <dd class="col-sm-10" id="transaction">...</dd>
+            <dt class="col-sm-2">Get Transaction</dt>
+            <dd class="col-sm-10">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <input class="form-control" type="text" id="transaction-input" placeholder="Enter an transaction hash to get info">
+                    </div>
+                    <div class="btn btn-primary" onclick="fetchTransaction()">Get Transaction</div>
+                </form>
+                <p id="transaction-query-result"></p>
+            </dd>
         </dl>
     </div>
     <script>
@@ -57,6 +65,26 @@
                     $('#balance-query-result').html(`
                         <div class="alert alert-danger" role="alert">
                         Error Fetching Balance: <b>${error.message}</b>
+                        </div>
+                    `)
+                }
+            }
+        }
+
+        // Function that will show the balance of the account entered in the text input box #account-input
+        var fetchTransaction = function () {
+            // Fetch the account entered in the input box
+            const transactionHash = $('#transaction-input').val();
+            // Fetch the balance using web3's async call
+            try {
+                web3.eth.getTransaction(transactionHash, function (error, result) {
+                    $('#transaction-query-result').text(JSON.stringify(result, null, 4))
+                })
+            } catch (error) {
+                if (error) {
+                    $('#transaction-query-result').html(`
+                        <div class="alert alert-danger" role="alert">
+                        Error Fetching Transaction: <b>${error.message}</b>
                         </div>
                     `)
                 }
@@ -86,15 +114,6 @@
                 web3.eth.getBalance(web3.eth.coinbase, function (error, result) {
                     if (!error) {
                         $('#balance').text(web3.fromWei(result));
-                    }
-                    else
-                        console.error(error);
-                });
-
-                // Get a random transaction from the Ethereum blockchain
-                web3.eth.getTransaction('0xbba4a55487ccc3a2cf701498763cc265df9df147bd755b8f30d0948eddc3215d', function (error, result) {
-                    if (!error) {
-                        $('#transaction').text(JSON.stringify(result, null, 4))
                     }
                     else
                         console.error(error);
