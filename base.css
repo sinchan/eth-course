@@ -1,0 +1,53 @@
+body {
+    background-color: #2a3d8a;
+}
+
+.logo {
+    margin: 50px auto;
+    max-width: 400px;
+    display: block;
+}
+
+.content {
+    max-width: 75%;
+    display: block;
+    margin: auto;
+    color: #ffffff;
+    background-color: #314492;
+    border-radius: 10px;
+    padding: 50px 15px 50px 50px;
+    font-size: 14px;
+}
+
+.btn {
+    cursor: pointer;
+    display: inline-block;
+    background: #475aa7;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.22);
+    border-radius: 3px;
+    transition: 0.3s all;
+    border: none;
+}
+
+.btn:hover {
+    background: #3e4f93;
+}
+
+.alert {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+#transaction-query-result {
+    white-space: pre;
+    overflow-x: scroll;
+}
+
+#account-input, #transaction-input {
+    width: 400px;
+    margin-right: 10px;
+}
+
+#app-errors {
+    text-align: center;
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Basic MetaMask + Web3 Usage</title>
+  <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@0.20.6/dist/web3.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="base.css">
+</head>
+
+<body>
+  <img class="logo" src="https://www.filepicker.io/api/file/bhXDKscSSBmVkMhhOlyo" />
+  <div class="content">
+    <div id="app-errors"></div>
+    <dl class="row">
+      <dt class="col-sm-2">Account</dt>
+      <dd class="col-sm-10" id="account">...</dd>
+
+      <dt class="col-sm-2">Balance</dt>
+      <dd class="col-sm-10" id="balance">...</dd>
+
+      <dt class="col-sm-2">Check Balance</dt>
+      <dd class="col-sm-10">
+        <form class="form-inline">
+          <div class="form-group">
+            <input class="form-control" type="text" id="account-input" placeholder="Enter an account to see its balance">
+          </div>
+          <div class="btn btn-primary" onclick="">Get Balance</div>
+        </form>
+        <p id="balance-query-result"></p>
+      </dd>
+    </dl>
+  </div>
+  <script>
+    /* This is where we're going to be writing our Javascript */
+  </script>
+</body>
+
+</html>

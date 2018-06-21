@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Basic MetaMask + Web3 Usage</title>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@0.20.6/dist/web3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="base.css">
+</head>
+
+<body>
+    <img class="logo" src="https://www.filepicker.io/api/file/bhXDKscSSBmVkMhhOlyo" />
+    <div class="content">
+        <div id="app-errors"></div>
+        <dl class="row">
+            <dt class="col-sm-2">Account</dt>
+            <dd class="col-sm-10" id="account">...</dd>
+
+            <dt class="col-sm-2">Balance</dt>
+            <dd class="col-sm-10" id="balance">...</dd>
+
+            <dt class="col-sm-2">Check Balance</dt>
+            <dd class="col-sm-10">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <input class="form-control" type="text" id="account-input" placeholder="Enter an account to see its balance">
+                    </div>
+                    <div class="btn btn-primary" onclick="fetchBalance()">Get Balance</div>
+                </form>
+                <p id="balance-query-result"></p>
+            </dd>
+
+            <dt class="col-sm-2">Transaction</dt>
+            <dd class="col-sm-10" id="transaction">...</dd>
+        </dl>
+    </div>
+    <script>
+        // Function that will show the balance of the account entered in the text input box #account-input
+        var fetchBalance = function () {
+            // Fetch the account entered in the input box
+            const account = $('#account-input').val();
+            // Fetch the balance using web3's async call
+            try {
+                web3.eth.getBalance(account, function (error, result) {
+                    $('#balance-query-result').html(`
+                        <div class="alert alert-primary" role="alert">
+                            Account has a balance of <b>${web3.fromWei(result)}</b> ETH
+                        </div>
+                    `)
+                })
+            } catch (error) {
+                if (error) {
+                    $('#balance-query-result').html(`
+                        <div class="alert alert-danger" role="alert">
+                        Error Fetching Balance: <b>${error.message}</b>
+                        </div>
+                    `)
+                }
+            }
+        }
+
+        $(function () {
+
+            // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+            if (typeof web3 !== 'undefined') {
+                // Use Mist/MetaMask's provider
+                web3js = new Web3(web3.currentProvider);
+
+                if (web3.eth.coinbase === null) {
+                    $('#app-errors').html(`
+                        <div class="alert alert-danger" role="alert">
+                        Couldn't get the coinbase account. You aren't logged into your MetaMask account.
+                        </div>
+                    `)
+                    return;
+                }
+
+                // Show the address of the first MetaMask account
+                $('#account').text(web3.eth.coinbase);
+
+                // Get the balance of the account you've logged into with MetaMask
+                web3.eth.getBalance(web3.eth.coinbase, function (error, result) {
+                    if (!error) {
+                        $('#balance').text(web3.fromWei(result));
+                    }
+                    else
+                        console.error(error);
+                });
+
+                // Get a random transaction from the Ethereum blockchain
+                web3.eth.getTransaction('0xbba4a55487ccc3a2cf701498763cc265df9df147bd755b8f30d0948eddc3215d', function (error, result) {
+                    if (!error) {
+                        $('#transaction').text(JSON.stringify(result, null, 4))
+                    }
+                    else
+                        console.error(error);
+                });
+
+            } else {
+                // Web3 was not injected by MetaMask. Check that you're logged into MetaMask and are 
+                // serving this page from a local server and not by directly opening the file.
+                console.error(`MetaMask did not inject web3! Make sure you've followed the following steps:
+                    1) You have a the MetaMask extension installed
+                    2) You're serving this webpage from a local server (use 'python -m SimpleHTTPServer' if you have Python V2.X or 'python -m http.server' if you have Python V3.X installed)`)
+            }
+        })
+    </script>
+</body>
+
+</html>
