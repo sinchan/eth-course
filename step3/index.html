@@ -9,7 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
         crossorigin="anonymous">
-    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="../base.css">
 </head>
 
 <body>
@@ -33,21 +33,10 @@
                 </form>
                 <p id="balance-query-result"></p>
             </dd>
-
-            <dt class="col-sm-2">Get Transaction</dt>
-            <dd class="col-sm-10">
-                <form class="form-inline">
-                    <div class="form-group">
-                        <input class="form-control" type="text" id="transaction-input" placeholder="Enter an transaction hash to get info">
-                    </div>
-                    <div class="btn btn-primary" onclick="fetchTransaction()">Get Transaction</div>
-                </form>
-                <p id="transaction-query-result"></p>
-            </dd>
         </dl>
     </div>
     <script>
-        // Function that will show the balance of the account entered in the text input box #account-input
+        // Step 3: Function that will show the balance of the account entered in the text input box #account-input
         var fetchBalance = function () {
             // Fetch the account entered in the input box
             const account = $('#account-input').val();
@@ -71,29 +60,8 @@
             }
         }
 
-        // Function that will show the balance of the account entered in the text input box #account-input
-        var fetchTransaction = function () {
-            // Fetch the account entered in the input box
-            const transactionHash = $('#transaction-input').val();
-            // Fetch the balance using web3's async call
-            try {
-                web3.eth.getTransaction(transactionHash, function (error, result) {
-                    $('#transaction-query-result').text(JSON.stringify(result, null, 4))
-                })
-            } catch (error) {
-                if (error) {
-                    $('#transaction-query-result').html(`
-                        <div class="alert alert-danger" role="alert">
-                        Error Fetching Transaction: <b>${error.message}</b>
-                        </div>
-                    `)
-                }
-            }
-        }
-
         $(function () {
-
-            // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+            // Step 1: Check if Web3 has been injected by the browser (Mist/MetaMask)
             if (typeof web3 !== 'undefined') {
                 // Use Mist/MetaMask's provider
                 web3js = new Web3(web3.currentProvider);
@@ -110,7 +78,7 @@
                 // Show the address of the first MetaMask account
                 $('#account').text(web3.eth.coinbase);
 
-                // Get the balance of the account you've logged into with MetaMask
+                // Step 2: Get the balance of the account you've logged into with MetaMask
                 web3.eth.getBalance(web3.eth.coinbase, function (error, result) {
                     if (!error) {
                         $('#balance').text(web3.fromWei(result));
@@ -123,8 +91,8 @@
                 // Web3 was not injected by MetaMask. Check that you're logged into MetaMask and are 
                 // serving this page from a local server and not by directly opening the file.
                 console.error(`MetaMask did not inject web3! Make sure you've followed the following steps:
-                    1) You have a the MetaMask extension installed
-                    2) You're serving this webpage from a local server (use 'python -m SimpleHTTPServer' if you have Python V2.X or 'python -m http.server' if you have Python V3.X installed)`)
+                            1) You have a the MetaMask extension installed
+                            2) You're serving this webpage from a local server (use 'python -m SimpleHTTPServer' if you have Python V2.X or 'python -m http.server' if you have Python V3.X installed)`)
             }
         })
     </script>
