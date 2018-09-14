@@ -54,11 +54,14 @@
                 // Show the address of the first MetaMask account
                 $('#account').text(web3.eth.coinbase);
             } else {
+                let message = `Make sure you have the MetaMask extension installed.`
+                if (window.location.href.startsWith('file://')) {
+                    message = `You need to serve this webpage from a local server (the url has to start with something like http://localhost:8080/solution/index.html and NOT file://.../index.html as it is right now)`
+                    message += `\n\nUse 'python -m SimpleHTTPServer 8080' if you have Python V2.X or 'python -m http.server 8080' if you have Python V3.X installed. Then open http://localhost:8080/`
+                }
                 // Web3 was not injected by MetaMask. Check that you're logged into MetaMask and are 
                 // serving this page from a local server and not by directly opening the file.
-                console.error(`MetaMask did not inject web3! Make sure you've followed the following steps:
-          1) You have a the MetaMask extension installed
-          2) You're serving this webpage from a local server (use 'python -m SimpleHTTPServer' if you have Python V2.X or 'python -m http.server' if you have Python V3.X installed)`)
+                console.error(`MetaMask did not inject web3! \n${message}`)
             }
         })
     </script>
